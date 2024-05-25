@@ -1,0 +1,50 @@
+/**
+ * src/styles/settings.scss
+ *
+ * Configures SASS variables and Vuetify overwrites
+ */
+
+// https://vuetifyjs.com/features/sass-variables/`
+// @use 'vuetify/settings' with (
+//   $color-pack: false
+// );
+
+*{
+  //direction: rtl;
+  font-family: Vazirmatn, sans-serif;
+  font-feature-settings: "ss01";
+
+}
+
+//.count-clock-up{
+//  font-size: 100px;
+//}.count-clock-down{
+//  font-size: 100px;
+//}
+.count-down-view {
+  display: flex;
+  align-items: center;
+  font-size: 19px;
+  height: 80px;
+  line-height: 80px;
+  color: #fff;
+}
+
+.v-card--variant-elevated, .v-card--variant-flat {
+  background: rgba(var(--v-theme-surface),0.7) !important;
+}
+
+
+.v-list {
+  overflow: auto;
+  padding: 8px 0;
+  position: relative;
+  outline: none;
+  border-color: rgba(var(--v-border-color), var(--v-border-opacity));
+  border-style: solid;
+  border-width: 0;
+  box-shadow: 0px 0px 0px 0px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)), 0px 0px 0px 0px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)), 0px 0px 0px 0px var(--v-shadow-key-ambient-opacity, rgba(0, 0, 0, 0.12));
+  border-radius: 0;
+  background: rgba(var(--v-theme-surface),0.60) !important;
+  color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+}

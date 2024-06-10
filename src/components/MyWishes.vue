@@ -65,9 +65,11 @@ import { PerfectScrollbar } from "vue3-perfect-scrollbar";
 import type Wish from "@/models/wish";
 import {useWishStore} from "@/stores/wish";
 import {useToast} from "vue-toast-notification";
+import {useUserStore} from "@/stores/user";
 const wish = ref({} as Wish)
 const wishesList = ref<Wish[]>([]);
 const wishStore = useWishStore()
+const userStore = useUserStore()
 const $toast = useToast();
 const handleSubmit = () => {
   wishStore.add(wish.value).then(({data}) => {
@@ -78,13 +80,21 @@ const handleSubmit = () => {
   })
 }
 const openModal = () => {
-  document.querySelector("#my_modal_2")!.showModal();
+  if (userStore.getUser){
+    document.querySelector("#my_modal_2")!.showModal();
+  }else {
+    $toast.error("لطفا ابتدا وارد شوید", {
+      position: "bottom-left",
+    });
+  }
 }
 onMounted(() => {
   wishesList.value = [];
-  wishStore.list().then(({data}) => {
-    wishesList.value = data.data as Wish[]
-  })
+  if (userStore.getUser){
+    wishStore.list().then(({data}) => {
+      wishesList.value = data.data as Wish[]
+    })
+  }
 });
 </script>
 

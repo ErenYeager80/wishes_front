@@ -1,21 +1,19 @@
-/**
- * main.ts
- *
- * Bootstraps Vuetify and other plugins then mounts the App`
- */
+import "vazirmatn/Vazirmatn-font-face.css";
+import "./assets/main.css";
+import "vue3-perfect-scrollbar/style.css";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import ToastPlugin from "vue-toast-notification";
+import "vue-toast-notification/dist/theme-sugar.css";
+import { createApp } from "vue";
+import { createPinia } from "pinia";
 
-// Plugins
-import { registerPlugins } from '@/plugins'
-import 'vazirmatn/Vazirmatn-font-face.css'
+import App from "./App.vue";
+import router from "./router";
 
-// Components
-import App from './App.vue'
+const app = createApp(App);
+app.component("font-awesome-icon", FontAwesomeIcon);
 
-// Composables
-import { createApp } from 'vue'
-
-const app = createApp(App)
-
-registerPlugins(app)
-
-app.mount('#app')
+app.use(createPinia());
+app.use(router);
+app.use(ToastPlugin);
+app.mount("#app");

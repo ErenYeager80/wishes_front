@@ -1,19 +1,19 @@
 <template>
-  <div class="card w-full bg-base-100/90 shadow-xl min-h-52">
-    <div class="card-body">
-      <h2 class="card-title justify-center">پنل کاربری</h2>
+  <div class="card w-full px-10 border-t">
+      <h2 class="card-title justify-center p-4">پنل کاربری</h2>
       <form @submit.prevent="handleSubmit">
-        <div class="mb-2">
+        <div class="mb-2 space-y-2">
           <h1>نام: {{ userStore.getUser.firstName }}</h1>
           <h1>نام خانوادگی: {{ userStore.getUser.lastName }}</h1>
           <h1>تلفن: {{ userStore.getUser.phone }}</h1>
         </div>
-        <button type="submit" class="w-full p-2 bg-red-700 rounded-md">
-          خروج
-        </button>
+        <div class="py-4">
+          <button type="submit" class="w-full p-2 bg-red-700 rounded-md">
+            خروج
+          </button>
+        </div>
       </form>
       <div class="card-actions justify-end"></div>
-    </div>
   </div>
   <dialog id="my_modal_1" class="modal">
     <div class="modal-box">

@@ -1,11 +1,11 @@
 <template>
-  <div class="card bg-base-100/90 shadow-xl max-h-52 w-fit">
+  <div class="card bg-base-100/70 shadow-xl">
     <div class="card-body">
-      <h2 class="card-title justify-center">زمان باقی مانده تا ایونت</h2>
+      <h2 class="card-title justify-center pb-4"> زمان باقی مانده تا دورهمی</h2>
 
       <div class="grid grid-flow-col gap-5 text-center auto-cols-max">
         <div
-          class="flex flex-col p-2 bg-neutral rounded-box text-neutral-content"
+          class="flex flex-col p-2 bg-[#3a7da3] rounded-box"
         >
           <span class="countdown font-mono text-5xl">
             <span :style="`--value:${timeLeft.second}`"></span>
@@ -13,7 +13,7 @@
           ثانیه
         </div>
         <div
-          class="flex flex-col p-2 bg-neutral rounded-box text-neutral-content"
+          class="flex flex-col p-2 bg-[#3a7da3] rounded-box"
         >
           <span class="countdown font-mono text-5xl">
             <span :style="`--value:${timeLeft.minute}`"></span>
@@ -21,7 +21,7 @@
           دقیقه
         </div>
         <div
-          class="flex flex-col p-2 bg-neutral rounded-box text-neutral-content"
+          class="flex flex-col p-2 bg-[#3a7da3] rounded-box"
         >
           <span class="countdown font-mono text-5xl">
             <span :style="`--value:${timeLeft.hour}`"></span>

@@ -12,20 +12,26 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@canopassoftware/vue-file-upload": "^1.0.8",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-brands-svg-icons": "^6.5.2",
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@m0ksem/vue-custom-scrollbar": "^0.0.7",
+    "@vee-validate/rules": "^4.13.1",
     "axios": "^1.7.2",
+    "dropzone-vue": "^0.1.11",
+    "dropzone-vue3": "^1.0.2",
     "perfect-scrollbar": "^1.5.5",
     "pinia": "^2.1.7",
     "vazirmatn": "^33.0.3",
+    "vee-validate": "^4.13.1",
     "vue": "^3.4.21",
     "vue-custom-scrollbar": "^1.4.4",
     "vue-router": "^4.3.0",
     "vue-toast-notification": "^3.1.2",
+    "vue-upload-component": "^2.8.23",
     "vue3-perfect-scrollbar": "^2.0.0"
   },
   "devDependencies": {

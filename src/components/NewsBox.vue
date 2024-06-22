@@ -1,7 +1,7 @@
 <template>
-  <div class="card w-full bg-base-100/90 shadow-xl max-h-52">
-    <div class="card-body">
-      <h1 class="card-title justify-center">اخبار روز</h1>
+  <div class=" w-full border-t px-10 rounded-t-2xl">
+    <div class="">
+      <h1 class="card-title justify-center py-4 ">اخبار روز</h1>
 
       <PerfectScrollbar style="direction: rtl">
         <p v-for="(news, index) in newsList" :key="index" class="mb-2">
@@ -35,6 +35,6 @@ onMounted(() => {
 </script>
 <style scoped>
 .ps {
-  max-height: 100px; /* or height: 100px; */
+  max-height: 200px; /* or height: 100px; */
 }
 </style>

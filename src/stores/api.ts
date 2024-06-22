@@ -24,5 +24,7 @@ export const useApiStore = defineStore("api", () => {
       },
     });
   }
+
+
   return { post, get };
 });

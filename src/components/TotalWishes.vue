@@ -1,11 +1,9 @@
 <template>
-  <div class="card w-full bg-base-100/90 shadow-xl">
-    <div class="card-body">
-      <h2 class="card-title justify-center">کل آرزوها</h2>
-      <p class="text-2xl text-center">{{ totalWishes }}</p>
+  <div class=" w-full border-t px-10 rounded-t-2xl">
+      <h2 class="card-title justify-center py-4 ">کل آرزوها: {{ totalWishes }}</h2>
+<!--      <p class="text-2xl text-center">{{ totalWishes }}</p>-->
       <div class="card-actions justify-end"></div>
     </div>
-  </div>
 </template>
 
 <script setup lang="ts">

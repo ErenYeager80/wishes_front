@@ -1,60 +1,114 @@
 <template>
-  <div class="card w-full bg-base-100/90 shadow-xl ">
-    <div class="card-body">
-      <h2 class="card-title justify-center">آرزو های من</h2>
-      <PerfectScrollbar class="wishes-scroll">
-        <div
-          v-for="(wish, index) in wishesList"
-          :key="index"
-          class="wish-item mb-1"
-        >
-          <div class="wish-header">
-            <img
-              src="../assets/wish-tree.png"
-              alt="Profile"
-              class="wish-img w-10 h-10 rounded-full"
-            />
-            <p class="textarea-xxl font-semibold">{{ wish.title }}</p>
-          </div>
-          <p class="textarea-xs wish-description">
-            {{ wish.content }}
-          </p>
+  <div
+    class="w-full shadow-xl bg-gradient-to-b from-[#143045] to-[#675a3d] h-screen pt-12"
+  >
+    <h2 class="card-title justify-center border-t py-4 rounded-t-2xl">
+      آرزو های من
+    </h2>
+    <h1
+      v-if="!userStore.getUser"
+      class="card-title justify-center pb-4 rounded-b-2xl text-[#c89763] border-b"
+    >
+      لطفا ابتدا وارد شوید
+    </h1>
+    <PerfectScrollbar v-if="userStore.getUser" class="wishes-scroll h-52">
+      <div
+        v-for="(wish, index) in wishesList"
+        :key="index"
+        class="wish-item mb-1"
+      >
+        <div class="wish-header">
+          <img
+            :src="
+              wish.file
+                ? 'https://api.wishestree.ir/' + wish.file.path
+                : '/src/assets/wish-tree.png'
+            "
+            alt="Profile"
+            class="wish-img w-10 h-10 rounded-full"
+          />
+          <p class="textarea-xxl font-semibold">{{ wish.title }}</p>
         </div>
-      </PerfectScrollbar>
-      <div class="card-actions justify-center">
-        <button type="submit" class="w-1/2 p-2 bg-blue-700 rounded-md" @click="openModal">
-          اضافه کردن
-        </button>
+        <p class="textarea-xs wish-description">
+          {{ wish.content }}
+        </p>
       </div>
+    </PerfectScrollbar>
+    <div class="card-actions justify-center pt-8">
+      <button
+        v-if="userStore.getUser"
+        type="submit"
+        class="w-1/2 p-2 bg-[#3a7da3] rounded-md"
+        @click="openModal"
+      >
+        اضافه کردن
+      </button>
+      <button
+        @click="openModals"
+        type="submit"
+        class="w-1/2 p-2 bg-[#3a7da3] rounded-md"
+      >
+        درباره ما
+      </button>
+      <AboutUs v-if="isModalOpen" @close="closeModal" />
     </div>
   </div>
   <dialog id="my_modal_2" class="modal">
-    <div class="modal-box">
-      <form
-          @submit.prevent="handleSubmit"
-          class="form-control mt-7 gap-3 items-center"
-      >
+    <div class="modal-box bg-gradient-to-b from-[#143045] to-[#675a3d]">
+      <Form @submit="handleSubmit" class="form-control mt-7 gap-3 items-center">
         <h3 class="font-bold text-lg text-center">
           اطلاعات کاربری را وارد کنید
         </h3>
 
-        <input
-            v-model="wish.title"
-            type="text"
-            placeholder="عنوان آرزو"
-            class="input input-bordered w-full max-w-xs"
+        <Field
+          v-model="wish.title"
+          type="text"
+          rules="required"
+          name="wish title"
+          placeholder="عنوان آرزو"
+          class="input w-full max-w-xs"
+        />
+        <ErrorMessage
+          class="flex justify-start text-red-600"
+          dir="ltr"
+          name="wish title"
+        />
+        <Field
+          v-model="wish.content"
+          type="text"
+          name="wish content"
+          rules="required"
+          placeholder="متن آرزو"
+          class="input w-full max-w-xs"
+        />
+        <ErrorMessage
+          class="flex justify-start text-red-600"
+          dir="ltr"
+          name="wish content"
         />
         <input
-            v-model="wish.content"
-            type="text"
-            placeholder="متن آرزو"
-            class="input input-bordered w-full max-w-xs"
+          @change="uploadFile($event)"
+          type="file"
+          class="file-input file-input-bordered file-input-info w-full max-w-xs"
+          dir="ltr"
         />
-
         <div class="modal-action">
-          <button class="btn btn-success">ثبت</button>
+          <button
+            class="me-4 inline-flex items-center justify-center p-2 px-8 text-lg rounded-md bg-[#3a7da3] disabled:bg-[#2a5b75]"
+            :disabled="isButton"
+          >
+            ثبت
+            <span v-if="isButton" class="ms-2 loading loading-spinner"></span>
+          </button>
+          <button
+            class="inline-flex items-center justify-center p-2 px-8 text-lg rounded-md bg-[#3a7da3] disabled:bg-[#2a5b75]"
+            @click="closeModal1"
+            type="button"
+          >
+            بستن
+          </button>
         </div>
-      </form>
+      </Form>
     </div>
   </dialog>
 </template>
@@ -63,44 +117,83 @@
 import { ref, onMounted } from "vue";
 import { PerfectScrollbar } from "vue3-perfect-scrollbar";
 import type Wish from "@/models/wish";
-import {useWishStore} from "@/stores/wish";
-import {useToast} from "vue-toast-notification";
-import {useUserStore} from "@/stores/user";
-const wish = ref({} as Wish)
+import { useWishStore } from "@/stores/wish";
+import { useToast } from "vue-toast-notification";
+import { useUserStore } from "@/stores/user";
+import AboutUs from "@/components/AboutUs.vue";
+import { useApiStore } from "@/stores/api";
+import { Form, Field, ErrorMessage } from "vee-validate";
+
+const isButton = ref(false);
+const isModalOpen = ref(false);
+const wish = ref({} as Wish);
 const wishesList = ref<Wish[]>([]);
-const wishStore = useWishStore()
-const userStore = useUserStore()
+const wishStore = useWishStore();
+const userStore = useUserStore();
+const apiStore = useApiStore();
 const $toast = useToast();
 const handleSubmit = () => {
-  wishStore.add(wish.value).then(({data}) => {
+  isButton.value = true;
+  wishStore.add(wish.value).then(() => {
+    isButton.value = false;
     $toast.success("آرزوی شما ثبت شد", {
       position: "bottom-left",
     });
     document.querySelector("#my_modal_2")!.close();
-  })
-}
+  });
+};
+
 const openModal = () => {
-  if (userStore.getUser){
+  if (userStore.getUser) {
     document.querySelector("#my_modal_2")!.showModal();
-  }else {
+  } else {
     $toast.error("لطفا ابتدا وارد شوید", {
       position: "bottom-left",
     });
   }
-}
+};
+const openModals = () => {
+  isModalOpen.value = true;
+};
+
+const closeModal = () => {
+  isModalOpen.value = false;
+};
+const closeModal1 = () => {
+  document.querySelector("#my_modal_2")!.close();
+};
 onMounted(() => {
   wishesList.value = [];
-  if (userStore.getUser){
-    wishStore.list().then(({data}) => {
-      wishesList.value = data.data as Wish[]
-    })
+  if (userStore.getUser) {
+    wishStore.list().then(({ data }) => {
+      wishesList.value = data.data as Wish[];
+    });
   }
 });
+
+function uploadFile(event: Event) {
+  const input = event.target as HTMLInputElement;
+  if (input && input.files) {
+    const file = input.files[0];
+    isButton.value = true;
+    apiStore
+      .post(
+        import.meta.env.VITE_BASE_URL + "/file",
+        { file: file },
+        { "Content-Type": "multipart/form-data" }
+      )
+      .then((res) => {
+        console.log(res);
+        wish.value.imageId = res.data.data.id;
+        isButton.value = false;
+      });
+  }
+}
 </script>
 
 <style scoped>
 .wishes-scroll {
-  max-height: 100px;
+  max-height: 500px !important;
   direction: rtl;
 }
 
@@ -123,8 +216,5 @@ onMounted(() => {
 
 .wish-description {
   margin-top: 0;
-}
-.ps {
-  max-height: 100px; /* or height: 100px; */
 }
 </style>

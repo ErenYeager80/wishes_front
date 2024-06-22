@@ -2,12 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+.tree-bg {
     background-image: url('@/assets/wish-tree.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+}
+body{
     font-family: Vazirmatn, sans-serif !important;
     font-feature-settings: "ss01";
-
+    color:white;
 }

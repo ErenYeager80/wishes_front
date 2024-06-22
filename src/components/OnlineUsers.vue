@@ -1,11 +1,6 @@
 <template>
-  <div class="card w-full bg-base-100/90 shadow-xl">
-    <div class="card-body">
-      <h2 class="card-title justify-center">افراد آنلاین</h2>
-      <p class="text-2xl text-center">
-        {{ onlineUsers }}
-      </p>
-    </div>
+  <div class=" w-full border-t rounded-t-2xl">
+      <h2 class="card-title justify-center py-4 ">افراد آنلاین: {{ onlineUsers }}</h2>
   </div>
 </template>
 

@@ -1,5 +1,6 @@
 <template>
-  <div class="w-full shadow-xl bg-gradient-to-b from-[#143045] to-[#675a3d] h-screen pt-12"
+  <div
+    class="w-full shadow-xl bg-gradient-to-b from-[#143045] to-[#675a3d] h-screen pt-12"
   >
     <h2 class="card-title justify-center border-t py-4 rounded-t-2xl">
       آرزو های من
@@ -26,13 +27,20 @@
             alt="Profile"
             class="wish-img w-10 h-10 rounded-full"
           />
-          <p class="textarea-xxl font-semibold">{{ wish.title }}</p>
+          <button
+            type="submit"
+            @click="openModals2(wish)"
+            class="hover:text-[#3a7da3] textarea-xxl font-semibold"
+          >
+            {{ wish.title }}
+          </button>
         </div>
-        <p class="textarea-xs wish-description">
+        <p class="textarea-xs wish-description truncate pe-4">
           {{ wish.content }}
         </p>
       </div>
     </PerfectScrollbar>
+    <WishDetail :wish="selectedWish" v-if="isModalOpen2" @close="closeModal2" />
     <div class="card-actions justify-center pt-8">
       <button
         v-if="userStore.getUser"
@@ -122,9 +130,12 @@ import { useUserStore } from "@/stores/user";
 import AboutUs from "@/components/AboutUs.vue";
 import { useApiStore } from "@/stores/api";
 import { Form, Field, ErrorMessage } from "vee-validate";
+import WishDetail from "@/components/WishDetail.vue";
 
+const selectedWish = ref<Wish>({} as Wish);
 const isButton = ref(false);
 const isModalOpen = ref(false);
+const isModalOpen2 = ref(false);
 const wish = ref({} as Wish);
 const wishesList = ref<Wish[]>([]);
 const wishStore = useWishStore();
@@ -157,6 +168,14 @@ const openModals = () => {
 
 const closeModal = () => {
   isModalOpen.value = false;
+};
+const openModals2 = (wish: Wish) => {
+  selectedWish.value = wish;
+  isModalOpen2.value = true;
+};
+
+const closeModal2 = () => {
+  isModalOpen2.value = false;
 };
 const closeModal1 = () => {
   document.querySelector("#my_modal_2")!.close();

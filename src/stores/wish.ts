@@ -1,8 +1,5 @@
 import { defineStore } from "pinia";
-import { useUserStore } from "./user";
-import axios from "axios";
 import {useApiStore} from "@/stores/api";
-import * as async_hooks from "async_hooks";
 import type Wish from "@/models/wish";
 
 export const useWishStore = defineStore("wish", () => {

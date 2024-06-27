@@ -1,6 +1,5 @@
 <template>
-  <div
-    class="w-full shadow-xl bg-gradient-to-b from-[#143045] to-[#675a3d] h-screen pt-12"
+  <div class="w-full shadow-xl bg-gradient-to-b from-[#143045] to-[#675a3d] h-screen pt-12"
   >
     <h2 class="card-title justify-center border-t py-4 rounded-t-2xl">
       آرزو های من

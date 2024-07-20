@@ -10,6 +10,7 @@ import App from "./App.vue";
 import router from "./router";
 import { defineRule } from "vee-validate";
 import { all } from "@vee-validate/rules";
+import '../node_modules/flowbite-vue/dist/index.css';
 
 const app = createApp(App);
 app.component("font-awesome-icon", FontAwesomeIcon);

@@ -45,6 +45,7 @@ export const useUserStore = defineStore("user", {
           this.user = {
             firstName: data.data.user.first_name,
             lastName: data.data.user.last_name,
+            role: data.data.user.role,
             phone: data.data.user.phone,
             token: data.data.user.token,
           } as User;

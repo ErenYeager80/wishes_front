@@ -1,4 +1,4 @@
-<template>
+    <template>
   <div
     class="w-full shadow-xl bg-gradient-to-b from-[#143045] to-[#675a3d] h-screen pt-12"
   >
@@ -17,7 +17,7 @@
         :key="index"
         class="wish-item mb-1"
       >
-        <div class="wish-header">
+        <div class="wish-header flex justify-between">
           <img
             :src="
               wish.file
@@ -34,6 +34,11 @@
           >
             {{ wish.title }}
           </button>
+          <div @click="handleDone(wish.id!)">
+            <label class="pe-5 cursor-pointer label">
+              <input type="checkbox" class="checkbox checkbox-accent" :checked="wish.done_at!=null" />
+            </label>
+          </div>
         </div>
         <p class="textarea-xs wish-description truncate pe-4">
           {{ wish.content }}
@@ -131,6 +136,7 @@ import AboutUs from "@/components/AboutUs.vue";
 import { useApiStore } from "@/stores/api";
 import { Form, Field, ErrorMessage } from "vee-validate";
 import WishDetail from "@/components/WishDetail.vue";
+import {number} from "@m0ksem/vue-custom-scrollbar/dist/utils";
 
 const selectedWish = ref<Wish>({} as Wish);
 const isButton = ref(false);
@@ -142,6 +148,12 @@ const wishStore = useWishStore();
 const userStore = useUserStore();
 const apiStore = useApiStore();
 const $toast = useToast();
+
+const handleDone = (id: number) => {
+  wishStore.done(id).then(() => {
+
+  })
+}
 const handleSubmit = () => {
   isButton.value = true;
   wishStore.add(wish.value).then(() => {

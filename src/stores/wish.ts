@@ -10,5 +10,8 @@ export const useWishStore = defineStore("wish", () => {
     async function list(){
         return apiStore.get(import.meta.env.VITE_BASE_URL + "/wish")
     }
-    return {add, list}
+    async function done(id: number) {
+        return apiStore.put(import.meta.env.VITE_BASE_URL + "/wish/" + id + "/done", )
+    }
+    return {add, list, done}
 });

@@ -14,6 +14,16 @@ export const useApiStore = defineStore("api", () => {
       },
     });
   }
+  async function put(route: string, body={} as any, headers = {} as any) {
+    return axios.put(route, body, {
+      headers: {
+        ...headers,
+        Authorization: userStore.getUser
+          ? "Bearer " + userStore.getUser.token
+          : "",
+      },
+    });
+  }
   async function get(route: string, headers = {} as any) {
     return axios.get(route, {
       headers: {
@@ -26,5 +36,5 @@ export const useApiStore = defineStore("api", () => {
   }
 
 
-  return { post, get };
+  return { post, get, put };
 });

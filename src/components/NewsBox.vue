@@ -1,13 +1,7 @@
 <template>
   <div class=" w-full border-t px-10 rounded-t-2xl">
       <h1 class="card-title justify-center py-4 ">اخبار روز</h1>
-    <h1
-        v-if="!userStore.getUser"
-        class="w-full card-title justify-center pb-4 rounded-b-2xl text-[#c89763]"
-    >
-      لطفا ابتدا وارد شوید
-    </h1>
-      <PerfectScrollbar v-if="userStore.getUser" class="h-52">
+      <PerfectScrollbar class="h-52">
         <div
             v-for="(news, index) in newsList"
             :key="index"
@@ -32,7 +26,7 @@
       </PerfectScrollbar>
       <div class="flex flex-col items-center justify-center pt-8">
         <button
-            v-if="userStore.getUser"
+            v-if="userStore.getUser?.role=='admin'"
             type="submit"
             class="w-2/3 p-2 bg-[#3a7da3] rounded-md "
             @click="openModal"
@@ -165,11 +159,9 @@ const closeModal1 = () => {
 
 onMounted(() => {
   newsList.value = [];
-  if (userStore.getUser) {
-    newsStore.list().then(({ data }) => {
-      newsList.value = data.data as News[];
-    });
-  }
+  newsStore.list().then(({ data }) => {
+    newsList.value = data.data as News[];
+  });
 });
 </script>
 <style scoped>

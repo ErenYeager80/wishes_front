@@ -6,4 +6,5 @@ export default interface Wish {
   content: string;
   imageId?: number;
   file?: File;
+  done_at?: Date
 }

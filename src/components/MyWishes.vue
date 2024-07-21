@@ -1,42 +1,40 @@
-    <template>
-  <div
-    class="w-full shadow-xl bg-gradient-to-b from-[#143045] to-[#675a3d] h-screen pt-12"
-  >
-    <h2 class="card-title justify-center border-t py-4 rounded-t-2xl">
-      آرزو های من
-    </h2>
+<template>
+  <div class="w-full shadow-xl bg-gradient-to-b from-[#143045] to-[#675a3d] h-screen pt-12">
+    <h2 class="card-title justify-center border-t py-4 rounded-t-2xl">آرزو های من</h2>
     <h1
-      v-if="!userStore.getUser"
-      class="card-title justify-center pb-4 rounded-b-2xl text-[#c89763] border-b"
+        v-if="!userStore.getUser"
+        class="card-title justify-center pb-4 rounded-b-2xl text-[#c89763] border-b"
     >
       لطفا ابتدا وارد شوید
     </h1>
     <PerfectScrollbar v-if="userStore.getUser" class="wishes-scroll h-52">
-      <div
-        v-for="(wish, index) in wishesList"
-        :key="index"
-        class="wish-item mb-1"
-      >
+      <div v-for="(wish, index) in wishesList" :key="index" class="wish-item mb-1">
         <div class="wish-header flex justify-between">
           <img
-            :src="
+              :src="
               wish.file
                 ? 'https://api.wishestree.ir/' + wish.file.path
                 : '/src/assets/wish-tree.png'
             "
-            alt="Profile"
-            class="wish-img w-10 h-10 rounded-full"
+              alt="Profile"
+              class="wish-img w-10 h-10 rounded-full"
           />
           <button
-            type="submit"
-            @click="openModals2(wish)"
-            class="hover:text-[#3a7da3] textarea-xxl font-semibold"
+              type="submit"
+              @click="openModals2(wish)"
+              class="hover:text-[#3a7da3] textarea-xxl font-semibold"
+              :class="{ 'line-through': wish.done_at !== null }"
           >
             {{ wish.title }}
           </button>
-          <div @click="handleDone(wish.id!)">
+          <div @click="openConfirmationModal(wish)">
             <label class="pe-5 cursor-pointer label">
-              <input type="checkbox" class="checkbox checkbox-accent" :checked="wish.done_at!=null" />
+              <input
+                  type="checkbox"
+                  class="checkbox checkbox-accent"
+                  :checked="wish.done_at != null"
+                  :disabled="wish.done_at != null"
+              />
             </label>
           </div>
         </div>
@@ -47,81 +45,50 @@
     </PerfectScrollbar>
     <WishDetail :wish="selectedWish" v-if="isModalOpen2" @close="closeModal2" />
     <div class="card-actions justify-center pt-8">
-      <button
-        v-if="userStore.getUser"
-        type="submit"
-        class="w-1/2 p-2 bg-[#3a7da3] rounded-md"
-        @click="openModal"
-      >
+      <button v-if="userStore.getUser" type="submit" class="w-1/2 p-2 bg-[#3a7da3] rounded-md" @click="openModal">
         اضافه کردن
       </button>
-      <button
-        @click="openModals"
-        type="submit"
-        class="w-1/2 p-2 bg-[#3a7da3] rounded-md"
-      >
+      <button @click="openModals" type="submit" class="w-1/2 p-2 bg-[#3a7da3] rounded-md">
         درباره ما
       </button>
-      <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=506975&Code=p4IDT665UZZadJ4zh4nLfKcnMuUqJUIG'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=506975&Code=p4IDT665UZZadJ4zh4nLfKcnMuUqJUIG' alt='' style='cursor:pointer' code='p4IDT665UZZadJ4zh4nLfKcnMuUqJUIG'></a>
       <AboutUs v-if="isModalOpen" @close="closeModal" />
+    </div>
+    <div class="absolute bottom-0 m-auto">
+      <a referrerpolicy="origin" target="_blank" href="https://trustseal.enamad.ir/?id=506975&Code=p4IDT665UZZadJ4zh4nLfKcnMuUqJUIG">
+        <img referrerpolicy="origin" src="https://trustseal.enamad.ir/logo.aspx?id=506975&Code=p4IDT665UZZadJ4zh4nLfKcnMuUqJUIG" alt="" style="cursor:pointer" code="p4IDT665UZZadJ4zh4nLfKcnMuUqJUIG" />
+      </a>
     </div>
   </div>
   <dialog id="my_modal_2" class="modal">
     <div class="modal-box bg-gradient-to-b from-[#143045] to-[#675a3d]">
       <Form @submit="handleSubmit" class="form-control mt-7 gap-3 items-center">
-        <h3 class="font-bold text-lg text-center">
-          اطلاعات کاربری را وارد کنید
-        </h3>
+        <h3 class="font-bold text-lg text-center">اطلاعات کاربری را وارد کنید</h3>
 
-        <Field
-          v-model="wish.title"
-          type="text"
-          rules="required"
-          name="wish title"
-          placeholder="عنوان آرزو"
-          class="input w-full max-w-xs"
-        />
-        <ErrorMessage
-          class="flex justify-start text-red-600"
-          dir="ltr"
-          name="wish title"
-        />
-        <Field
-          v-model="wish.content"
-          type="text"
-          name="wish content"
-          rules="required"
-          placeholder="متن آرزو"
-          class="input w-full max-w-xs"
-        />
-        <ErrorMessage
-          class="flex justify-start text-red-600"
-          dir="ltr"
-          name="wish content"
-        />
-        <input
-          @change="uploadFile($event)"
-          type="file"
-          class="file-input file-input-bordered file-input-info w-full max-w-xs"
-          dir="ltr"
-        />
+        <Field v-model="wish.title" type="text" rules="required" name="wish title" placeholder="عنوان آرزو" class="input w-full max-w-xs" />
+        <ErrorMessage class="flex justify-start text-red-600" dir="ltr" name="wish title" />
+        <Field v-model="wish.content" type="text" name="wish content" rules="required" placeholder="متن آرزو" class="input w-full max-w-xs" />
+        <ErrorMessage class="flex justify-start text-red-600" dir="ltr" name="wish content" />
+        <input @change="uploadFile($event)" type="file" class="file-input file-input-bordered file-input-info w-full max-w-xs" dir="ltr" />
         <div class="modal-action">
-          <button
-            class="me-4 inline-flex items-center justify-center p-2 px-8 text-lg rounded-md bg-[#3a7da3] disabled:bg-[#2a5b75]"
-            :disabled="isButton"
-          >
+          <button class="me-4 inline-flex items-center justify-center p-2 px-8 text-lg rounded-md bg-[#3a7da3] disabled:bg-[#2a5b75]" :disabled="isButton">
             ثبت
             <span v-if="isButton" class="ms-2 loading loading-spinner"></span>
           </button>
-          <button
-            class="inline-flex items-center justify-center p-2 px-8 text-lg rounded-md bg-[#3a7da3] disabled:bg-[#2a5b75]"
-            @click="closeModal1"
-            type="button"
-          >
+          <button class="inline-flex items-center justify-center p-2 px-8 text-lg rounded-md bg-[#3a7da3] disabled:bg-[#2a5b75]" @click="closeModal1" type="button">
             بستن
           </button>
         </div>
       </Form>
+    </div>
+  </dialog>
+  <dialog id="confirmation_modal" class="modal">
+    <div class="modal-box bg-gradient-to-b from-[#143045] to-[#675a3d]">
+      <h3 class="font-bold text-lg">آیا مطمئن هستید؟</h3>
+      <p class="py-4">آیا می‌خواهید این آرزو را به اتمام برسانید؟</p>
+      <div class="modal-action">
+        <button @click="confirmDone" class="me-4 inline-flex items-center justify-center p-2 px-8 text-lg rounded-md bg-[#3a7da3] disabled:bg-[#2a5b75]">تأیید</button>
+        <button @click="closeConfirmationModal" class="me-4 inline-flex items-center justify-center p-2 px-8 text-lg rounded-md bg-red-700">لغو</button>
+      </div>
     </div>
   </dialog>
 </template>
@@ -137,7 +104,6 @@ import AboutUs from "@/components/AboutUs.vue";
 import { useApiStore } from "@/stores/api";
 import { Form, Field, ErrorMessage } from "vee-validate";
 import WishDetail from "@/components/WishDetail.vue";
-import {number} from "@m0ksem/vue-custom-scrollbar/dist/utils";
 
 const selectedWish = ref<Wish>({} as Wish);
 const isButton = ref(false);
@@ -149,12 +115,17 @@ const wishStore = useWishStore();
 const userStore = useUserStore();
 const apiStore = useApiStore();
 const $toast = useToast();
+const selectedWishId = ref<number | null>(null);
 
 const handleDone = (id: number) => {
   wishStore.done(id).then(() => {
+    const wish = wishesList.value.find(wish => wish.id === id);
+    if (wish) {
+      wish.done_at = new Date().toISOString(); // Assuming the done_at field is a string date
+    }
+  });
+};
 
-  })
-}
 const handleSubmit = () => {
   isButton.value = true;
   wishStore.add(wish.value).then(() => {
@@ -175,6 +146,7 @@ const openModal = () => {
     });
   }
 };
+
 const openModals = () => {
   isModalOpen.value = true;
 };
@@ -182,6 +154,7 @@ const openModals = () => {
 const closeModal = () => {
   isModalOpen.value = false;
 };
+
 const openModals2 = (wish: Wish) => {
   selectedWish.value = wish;
   isModalOpen2.value = true;
@@ -190,9 +163,27 @@ const openModals2 = (wish: Wish) => {
 const closeModal2 = () => {
   isModalOpen2.value = false;
 };
+
 const closeModal1 = () => {
   document.querySelector("#my_modal_2")!.close();
 };
+
+const openConfirmationModal = (wish: Wish) => {
+  selectedWishId.value = wish.id;
+  document.querySelector("#confirmation_modal")!.showModal();
+};
+
+const closeConfirmationModal = () => {
+  document.querySelector("#confirmation_modal")!.close();
+};
+
+const confirmDone = () => {
+  if (selectedWishId.value !== null) {
+    handleDone(selectedWishId.value);
+  }
+  closeConfirmationModal();
+};
+
 onMounted(() => {
   wishesList.value = [];
   if (userStore.getUser) {
@@ -208,16 +199,16 @@ function uploadFile(event: Event) {
     const file = input.files[0];
     isButton.value = true;
     apiStore
-      .post(
-        import.meta.env.VITE_BASE_URL + "/file",
-        { file: file },
-        { "Content-Type": "multipart/form-data" }
-      )
-      .then((res) => {
-        console.log(res);
-        wish.value.imageId = res.data.data.id;
-        isButton.value = false;
-      });
+        .post(
+            import.meta.env.VITE_BASE_URL + "/file",
+            { file: file },
+            { "Content-Type": "multipart/form-data" }
+        )
+        .then((res) => {
+          console.log(res);
+          wish.value.imageId = res.data.data.id;
+          isButton.value = false;
+        });
   }
 }
 </script>
@@ -247,5 +238,9 @@ function uploadFile(event: Event) {
 
 .wish-description {
   margin-top: 0;
+}
+
+.line-through {
+  text-decoration: line-through;
 }
 </style>

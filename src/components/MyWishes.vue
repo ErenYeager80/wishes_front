@@ -62,6 +62,7 @@
       >
         درباره ما
       </button>
+      <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=506975&Code=p4IDT665UZZadJ4zh4nLfKcnMuUqJUIG'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=506975&Code=p4IDT665UZZadJ4zh4nLfKcnMuUqJUIG' alt='' style='cursor:pointer' code='p4IDT665UZZadJ4zh4nLfKcnMuUqJUIG'></a>
       <AboutUs v-if="isModalOpen" @close="closeModal" />
     </div>
   </div>

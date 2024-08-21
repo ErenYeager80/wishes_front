@@ -16,10 +16,10 @@
       <div class="card-actions justify-end"></div>
   </div>
   <dialog id="my_modal_1" class="modal">
-    <div class="modal-box">
+    <div class="modal-box bg-gradient-to-b from-[#143045] to-[#675a3d]">
       <form
         @submit.prevent="submitProfile"
-        class="form-control mt-7 gap-3 items-center"
+        class="form-control mt-7 gap-3 items-center "
       >
         <h3 class="font-bold text-lg text-center">
           اطلاعات کاربری را وارد کنید

@@ -1,4 +1,4 @@
-    <template>
+<template>
   <div
     class="w-full shadow-xl bg-gradient-to-b from-[#143045] to-[#675a3d] h-screen pt-12"
   >
@@ -13,7 +13,7 @@
     </h1>
     <PerfectScrollbar v-if="userStore.getUser" class="wishes-scroll h-52">
       <div
-        v-for="(wish, index) in wishesList"
+        v-for="(wish, index) in wishStore.wishes"
         :key="index"
         class="wish-item mb-1"
       >
@@ -36,7 +36,11 @@
           </button>
           <div @click="handleDone(wish.id!)">
             <label class="pe-5 cursor-pointer label">
-              <input type="checkbox" class="checkbox checkbox-accent" :checked="wish.done_at!=null" />
+              <input
+                type="checkbox"
+                class="checkbox checkbox-accent"
+                :checked="wish.done_at != null"
+              />
             </label>
           </div>
         </div>
@@ -62,7 +66,17 @@
       >
         درباره ما
       </button>
-      <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=506975&Code=p4IDT665UZZadJ4zh4nLfKcnMuUqJUIG'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=506975&Code=p4IDT665UZZadJ4zh4nLfKcnMuUqJUIG' alt='' style='cursor:pointer' code='p4IDT665UZZadJ4zh4nLfKcnMuUqJUIG'></a>
+      <a
+        referrerpolicy="origin"
+        target="_blank"
+        href="https://trustseal.enamad.ir/?id=506975&Code=p4IDT665UZZadJ4zh4nLfKcnMuUqJUIG"
+        ><img
+          referrerpolicy="origin"
+          src="https://trustseal.enamad.ir/logo.aspx?id=506975&Code=p4IDT665UZZadJ4zh4nLfKcnMuUqJUIG"
+          alt=""
+          style="cursor: pointer"
+          code="p4IDT665UZZadJ4zh4nLfKcnMuUqJUIG"
+      /></a>
       <AboutUs v-if="isModalOpen" @close="closeModal" />
     </div>
   </div>
@@ -137,7 +151,6 @@ import AboutUs from "@/components/AboutUs.vue";
 import { useApiStore } from "@/stores/api";
 import { Form, Field, ErrorMessage } from "vee-validate";
 import WishDetail from "@/components/WishDetail.vue";
-import {number} from "@m0ksem/vue-custom-scrollbar/dist/utils";
 
 const selectedWish = ref<Wish>({} as Wish);
 const isButton = ref(false);
@@ -151,10 +164,8 @@ const apiStore = useApiStore();
 const $toast = useToast();
 
 const handleDone = (id: number) => {
-  wishStore.done(id).then(() => {
-
-  })
-}
+  wishStore.done(id).then(() => {});
+};
 const handleSubmit = () => {
   isButton.value = true;
   wishStore.add(wish.value).then(() => {
@@ -193,12 +204,10 @@ const closeModal2 = () => {
 const closeModal1 = () => {
   document.querySelector("#my_modal_2")!.close();
 };
-onMounted(() => {
+onMounted(async () => {
   wishesList.value = [];
   if (userStore.getUser) {
-    wishStore.list().then(({ data }) => {
-      wishesList.value = data.data as Wish[];
-    });
+    await wishStore.list();
   }
 });
 

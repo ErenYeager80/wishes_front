@@ -2,6 +2,7 @@
   <div class="min-h-screen flex w-full">
     <div class="w-2/12 flex flex-col relative">
       <MyWishes/>
+
     </div>
     <div class="w-8/12 flex flex-col items-center p-10 tree-bg">
       <EventCountdown />

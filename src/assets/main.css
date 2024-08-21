@@ -15,3 +15,7 @@ body{
     font-feature-settings: "ss01";
     color:white;
 }
+
+input {
+    color: black;
+}

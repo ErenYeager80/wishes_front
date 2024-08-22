@@ -10,7 +10,8 @@ export const useWishStore = defineStore("wish", () => {
     return apiStore
       .post(import.meta.env.VITE_BASE_URL + "/wish", wish)
       .then(({ data }) => {
-        wishes.value.push(data.data);
+        window.location.replace(data.data.action);
+        // wishes.value.push(data.data);
         return data.data;
       });
   }

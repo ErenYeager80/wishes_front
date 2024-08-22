@@ -263,11 +263,14 @@ const confirmDone = () => {
   closeConfirmationModal();
 };
 
+
+
 onMounted(async () => {
   wishesList.value = [];
   if (userStore.getUser) {
     await wishStore.list();
   }
+
 });
 
 function uploadFile(event: Event) {

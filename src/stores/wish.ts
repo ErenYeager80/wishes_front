@@ -15,6 +15,12 @@ export const useWishStore = defineStore("wish", () => {
         return data.data;
       });
   }
+  async function verify(token: string) {
+    return apiStore.post(import.meta.env.VITE_BASE_URL + "/wish" + "/verify", {invoice_id:token}).then(({ data }) => {
+      wishes.value.push(data.data);
+      return data.data;
+    })
+  }
   function compare(x: Wish, y: Wish) {
     if ((x.done_at && y.done_at) || (!x.done_at && !y.done_at)) {
       return 0;
@@ -41,5 +47,5 @@ export const useWishStore = defineStore("wish", () => {
         wishes.value.sort(compare);
       });
   }
-  return { add, list, done, wishes };
+  return { add, list, done, wishes, verify };
 });

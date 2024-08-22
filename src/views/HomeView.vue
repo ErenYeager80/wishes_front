@@ -28,7 +28,7 @@
 
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import {onMounted, ref} from 'vue';
 import LoginBox from "../components/LoginBox.vue";
 import OnlineUsers from "../components/OnlineUsers.vue";
 import EventCountdown from "../components/EventCountdown.vue";
@@ -37,10 +37,25 @@ import TotalWishes from "../components/TotalWishes.vue";
 import MyWishes from "@/components/MyWishes.vue";
 import { useUserStore } from "@/stores/user";
 import UserInfo from "@/components/UserInfo.vue";
+import {useWishStore} from "@/stores/wish";
 
 const userStore = useUserStore();
-const isSidebarOpen = ref(true);
+const wishStore = useWishStore();
 
+const isSidebarOpen = ref(true);
+function getUrlParams(param: string) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(param);
+}
+
+onMounted(async () => {
+  const authorityToken = getUrlParams("Authority");
+  const status = getUrlParams("Status");
+
+  if (authorityToken) {
+    await wishStore.verify(authorityToken)
+  }
+})
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
 };
